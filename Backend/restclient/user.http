@@ -1,0 +1,92 @@
+
+@baseUrl = http://localhost:3000
+@access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2ODBjM2RkNC0zNWUwLTQyZWUtYjkwYi00ZWNjNWU3ZDlmMjgiLCJlbWFpbCI6Im5qdWd1bmFocGV0ZXJuam9yb2dlQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1Mzc3NjE2MSwiZXhwIjoxNzU0MzgwOTYxfQ.vLXl1KlrFqks0X5WWkDlG167q77WRbi8ThtMMDF24PQ"
+
+### Set global headers
+### (VS Code REST Client automatically applies this to all requests below)
+### Replace with a valid token (admin or user based on access needs)
+Authorization: Bearer {{access_token}}
+
+### UPDATE USER (User or Admin)
+PATCH {{baseUrl}}/users/b7e5a183-e46a-42e3-a734-72d415027c0d
+Content-Type: application/json
+
+{
+  "name": "New Name",
+  "email": "njugunahpeternjoroge@gmail.com"
+}
+
+### UPDATE USER PASSWORD (User or Admin)
+PATCH {{baseUrl}}/users/b7e5a183-e46a-42e3-a734-72d415027c0d/password
+Content-Type: application/json
+
+{
+  "currentPassword": "oldpassword",
+  "newPassword": "newpassword"
+}
+
+### DELETE USER (Admin only)
+DELETE {{baseUrl}}/users/3baf14a7-37f5-4da6-ba5e-8e0d0d2b487b
+
+
+### CREATE USER (Admin only)
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "email": "b14446747e@gmail.com",
+  "password":"COURIER123",
+  "name": "peter",
+  "role": "COURIER"
+}
+
+###
+
+### CREATE USER (Regular user)
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "email": "devmaxmillianmuiruri@gmail.com",
+  "password":"courier123",
+  "name": "peter",
+  "role": "COURIER"
+}
+
+
+### GET ALL USERS
+GET {{baseUrl}}/users
+
+###
+### Get User by Email
+GET http://localhost:3000/users/by-email?email=peterjjuniordev@gmail.com
+# Authorization: Bearer <your_jwt_token>
+
+### GET USERS WITH FILTERS
+GET {{baseUrl}}/users?role=USER&status=ACTIVE&isVerified=true&search=user
+
+###
+
+### GET USERS PAGINATED (Admin only)
+GET {{baseUrl}}/users/paginated?page=1&limit=5
+
+###
+
+### GET SINGLE USER BY ID (Admin only)
+GET {{baseUrl}}/users/55a2f8bf-c805-40f5-80fb-0a35f4966d20
+
+###
+
+### CHANGE PASSWORD (Admin or User)
+PATCH {{baseUrl}}/users/b7e5a183-e46a-42e3-a734-72d415027c0d/password
+Content-Type: application/json
+
+{
+"currentPassword": "User123",
+  "newPassword": "user1234"
+}
+
+###
+
+### ACTIVATE/REACTIVATE USER (Admin only)
+PATCH {{baseUrl}}/users/b7e5a183-e46a-42e3-a734-72d415027c0d/status/active

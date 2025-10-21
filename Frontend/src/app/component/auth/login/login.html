@@ -1,0 +1,41 @@
+<app-navbar></app-navbar>
+<div class="flex items-center justify-center min-h-96 bg-white mt-10">
+  <div class="bg-[#034460] text-white p-8 rounded-md shadow-lg w-full max-w-md mt-0">
+    <h2 class="text-lg font-bold">login</h2>
+
+    <p class="font-bold mt-8 flex items-center justify-center text-3xl font-bold font-serif">
+      you can now login
+    </p>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <label class="block text-sm">email</label>
+      <input
+        formControlName="email"
+        type="text"
+        class="w-full p-2 mb-4 text-black rounded"
+        placeholder="Enter your email"
+      />
+    <label class="block text-sm">Password</label>
+    <input
+      formControlName="password"
+      type="password"
+      class="w-full p-2 mb-4 text-black rounded"
+      placeholder="Enter your password"
+    />
+      <button
+        type="submit"
+        class="w-full py-2 bg-[#B4791C] hover:bg-yellow-700 rounded text-black font-semibold">
+        login
+      </button>
+
+    </form>
+    <div class="mt-4 text-sm flex justify-between text-gray-300">
+      <p>dont have  an account?</p>
+      <a routerLink="/register" class="hover:text-gray-200 transition">register</a>
+    </div>
+    <div class="mt-2 text-sm text-center text-gray-300">
+      <a routerLink="/Forgotpassword" class="hover:text-gray-200 transition">Forgot Password?</a>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

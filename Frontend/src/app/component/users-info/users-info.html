@@ -1,0 +1,88 @@
+<app-navbar></app-navbar>
+
+<div class="bg-white flex justify-center mt-12 px-4">
+  <div class="w-full max-w-6xl">
+
+    <form [formGroup]="parcelForm" (ngSubmit)="onSubmit()" class="grid grid-cols-1 gap-10">
+
+      <!-- Sender and Receiver Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <!-- Sender -->
+        <div class="bg-white border border-gray-300 rounded-lg shadow-lg p-6">
+          <h2 class="text-gray-800 text-xl font-semibold mb-4">User Information</h2>
+
+          <input formControlName="senderName" type="text" placeholder="Name" class="w-full mb-4 p-2 border rounded" />
+          <input formControlName="senderEmail" type="email" placeholder="Email" class="w-full mb-4 p-2 border rounded" />
+          <input formControlName="senderPhone" type="tel" placeholder="Phone Number" pattern="[0-9]{10,12}" class="w-full mb-4 p-2 border rounded" />
+          <input formControlName="senderHometown" type="text" placeholder="Hometown" class="w-full mb-4 p-2 border rounded" />
+          <select formControlName="senderHometown" class="w-full mb-4 p-2 border rounded" (change)="onCountyChange('sender', $event)">
+            <option value="" disabled selected>Select County</option>
+            <option *ngFor="let county of counties" [value]="county.name">{{ county.name }}</option>
+            <option *ngIf="loadingCounties" value="" disabled>Loading counties...</option>
+          </select>
+          <div class="relative">
+            <input formControlName="senderZip" type="text" placeholder="Zip Code (Auto-filled)" class="w-full mb-4 p-2 border rounded bg-gray-50" readonly />
+            <span class="absolute right-3 top-2 text-xs text-gray-500">Auto-filled</span>
+          </div>
+        </div>
+
+        <!-- Receiver -->
+        <div class="bg-white border border-gray-300 rounded-lg shadow-lg p-6">
+          <h2 class="text-gray-800 text-xl font-semibold mb-4">Receiver Information</h2>
+
+          <input formControlName="receiverName" type="text" placeholder="Name" class="w-full mb-4 p-2 border rounded" />
+          <input formControlName="receiverEmail" type="email" placeholder="Email" class="w-full mb-4 p-2 border rounded" />
+          <input formControlName="receiverPhone" type="tel" placeholder="Phone Number" pattern="[0-9]{10,12}" class="w-full mb-4 p-2 border rounded" />
+          <select formControlName="receiverHometown" class="w-full mb-4 p-2 border rounded" (change)="onCountyChange('receiver', $event)">
+            <option value="" disabled selected>Select County</option>
+            <option *ngFor="let county of counties" [value]="county.name">{{ county.name }}</option>
+            <option *ngIf="loadingCounties" value="" disabled>Loading counties...</option>
+          </select>
+          <div class="relative">
+            <input formControlName="receiverZip" type="text" placeholder="Zip Code (Auto-filled)" class="w-full mb-4 p-2 border rounded bg-gray-50" readonly />
+            <span class="absolute right-3 top-2 text-xs text-gray-500">Auto-filled</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Package Info -->
+      <div class="bg-white border border-gray-300 rounded-lg shadow-lg p-6">
+        <h2 class="text-2xl font-semibold mb-4">Package Information</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <input formControlName="packageName" type="text" placeholder="Package Name *" class="w-full p-2 border rounded" required />
+          <input formControlName="packageWeight" type="number" placeholder="Package Weight (kg) *" class="w-full p-2 border rounded" min="0.1" step="0.1" required />
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <input formControlName="packageDimensions" type="text" placeholder="Dimensions (L x W x H cm)" class="w-full p-2 border rounded" />
+          <select formControlName="courierService" class="w-full p-2 border rounded" required>
+            <option value="">Select Courier Service *</option>
+            <option *ngFor="let service of courierServices" [value]="service">{{ service }}</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <input formControlName="price" type="number" placeholder="Price ($) *" class="w-full p-2 border rounded" min="0.01" step="0.01" required />
+        </div>
+
+        <div class="mb-4">
+          <textarea formControlName="notes" placeholder="Special instructions or notes" class="w-full p-2 border rounded" rows="3"></textarea>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="flex justify-end space-x-4">
+        <button type="button" (click)="resetForm()" class="bg-gray-600 text-white px-6 py-2 rounded shadow hover:bg-gray-700 transition">
+          Reset Form
+        </button>
+        <button type="submit" [disabled]="!parcelForm.valid" class="bg-blue-600 text-white px-6 py-2 rounded shadow hover:bg-blue-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed">
+          Create Order
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<app-footer></app-footer>

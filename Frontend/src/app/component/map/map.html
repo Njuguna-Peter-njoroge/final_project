@@ -1,0 +1,146 @@
+<app-navbar></app-navbar>
+<div class="h-screen flex flex-col">
+  <!-- Header -->
+  <div class="bg-white shadow px-6 py-4 border-b flex justify-between items-center">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-800">Courier Tracking Map</h1>
+      <p class="text-sm text-gray-600">Track your deliveries using Google Maps</p>
+    </div>
+    <div class="flex gap-2">
+      <button (click)="refreshMap()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">🔄 Refresh</button>
+      <button (click)="toggleRoutes()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg">🗺️ Toggle Routes</button>
+    </div>
+  </div>
+
+  <div class="flex flex-1">
+    <!-- Sidebar -->
+    <div class="w-80 bg-white border-r overflow-y-auto">
+      <div class="p-4 border-b">
+        <h2 class="text-lg font-semibold text-gray-700 mb-2">Orders ({{ orders.length }})</h2>
+      </div>
+
+      <!-- Tracking Information Panel -->
+      <div *ngIf="trackingNumber && trackingResult" class="p-4 border-b bg-blue-50">
+        <h3 class="text-lg font-semibold text-gray-700 mb-2">📦 Tracking: {{ trackingNumber }}</h3>
+        <div class="space-y-2 text-sm">
+          <div class="flex justify-between">
+            <span class="font-medium">Status:</span>
+            <span class="px-2 py-1 rounded text-xs font-semibold"
+                  [ngClass]="{
+            'bg-yellow-500 text-white': trackingResult.status === 'PENDING',
+            'bg-blue-500 text-white': trackingResult.status === 'CONFIRMED',
+            'bg-purple-500 text-white': trackingResult.status === 'PICKED_UP',
+            'bg-orange-500 text-white': trackingResult.status === 'IN_TRANSIT',
+            'bg-green-500 text-white': trackingResult.status === 'DELIVERED',
+            'bg-red-500 text-white': trackingResult.status === 'CANCELLED'
+          }">
+              {{ trackingResult.status }}
+            </span>
+          </div>
+          <div>
+            <span class="font-medium">Service:</span> {{ trackingResult.courierService }}
+          </div>
+          <div>
+            <span class="font-medium">Weight:</span> {{ trackingResult.packageWeight }} kg
+          </div>
+          <div>
+            <span class="font-medium">Price:</span> ${{ trackingResult.price }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div *ngIf="isLoadingTracking" class="p-4 border-b bg-yellow-50">
+        <div class="flex items-center space-x-2">
+          <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
+          <span class="text-sm text-gray-600">Loading tracking information...</span>
+        </div>
+      </div>
+
+      <div class="p-3 space-y-3">
+        <div *ngFor="let order of orders" class="border rounded p-3 shadow-sm hover:shadow cursor-pointer"
+             [class.bg-blue-50]="selectedOrder?.orderId === order.orderId"
+             (click)="selectOrder(order)">
+          <h3 class="font-semibold text-gray-800">{{ order.customerName }}</h3>
+          <p class="text-xs text-gray-500">{{ order.status }}</p>
+          <p class="text-xs text-gray-500">📦 {{ order.pickupAddress }}</p>
+          <p class="text-xs text-gray-500">🏠 {{ order.deliveryAddress }}</p>
+
+          <div class="flex justify-between text-xs mt-2">
+            <button (click)="centerOnOrder(order); $event.stopPropagation()" class="text-blue-600 hover:underline">View</button>
+            <button *ngIf="!isTracking || selectedOrder?.orderId !== order.orderId"
+                    (click)="startTracking(order); $event.stopPropagation()" class="text-green-600 hover:underline">Track</button>
+            <button *ngIf="isTracking && selectedOrder?.orderId === order.orderId"
+                    (click)="stopTracking(); $event.stopPropagation()" class="text-red-600 hover:underline">Stop</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Google Map -->
+    <div class="flex-1 relative">
+      <google-map height="100%" width="100%" [center]="center" [zoom]="zoom">
+        <map-marker *ngIf="pickupMarker" [position]="pickupMarker!" [label]="'📦'"></map-marker>
+        <map-marker *ngIf="deliveryMarker" [position]="deliveryMarker!" [label]="'🏠'"></map-marker>
+        <map-marker *ngIf="courierMarker" [position]="courierMarker!" [label]="'🚚'"></map-marker>
+      </google-map>
+
+      <!-- Tracking Info Overlay -->
+      <div *ngIf="isTracking && selectedOrder"
+           class="absolute top-4 right-4 bg-white rounded shadow p-4 w-64 text-sm z-10">
+        <h3 class="font-semibold text-gray-700 mb-2">Tracking: {{ selectedOrder.customerName }}</h3>
+        <p>Status: <span class="font-medium">{{ selectedOrder.status }}</span></p>
+        <p>Courier: {{ selectedOrder.courierService }}</p>
+        <p>Pickup: {{ selectedOrder.pickupAddress }}</p>
+        <p>Delivery: {{ selectedOrder.deliveryAddress }}</p>
+      </div>
+
+      <!-- Tracking Result Overlay -->
+      <div *ngIf="trackingResult && !isTracking" 
+           class="absolute top-4 right-4 bg-white rounded shadow p-4 w-80 text-sm z-10 max-h-96 overflow-y-auto">
+        <h3 class="font-semibold text-gray-700 mb-2">📦 Package Details</h3>
+        <div class="space-y-2">
+          <div class="flex justify-between">
+            <span class="font-medium">Tracking:</span>
+            <span class="font-mono text-xs">{{ trackingResult.trackingNumber }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="font-medium">Status:</span>
+            <span class="px-2 py-1 rounded text-xs font-semibold"
+                  [ngClass]="{
+                    'bg-yellow-500 text-white': trackingResult.status === 'PENDING',
+                    'bg-blue-500 text-white': trackingResult.status === 'CONFIRMED',
+                    'bg-purple-500 text-white': trackingResult.status === 'PICKED_UP',
+                    'bg-orange-500 text-white': trackingResult.status === 'IN_TRANSIT',
+                    'bg-green-500 text-white': trackingResult.status === 'DELIVERED',
+                    'bg-red-500 text-white': trackingResult.status === 'CANCELLED'
+                  }">
+              {{ trackingResult.status }}
+            </span>
+          </div>
+          <div>
+            <span class="font-medium">Service:</span> {{ trackingResult.courierService }}
+          </div>
+          <div>
+            <span class="font-medium">Weight:</span> {{ trackingResult.packageWeight }} kg
+          </div>
+          <div>
+            <span class="font-medium">Dimensions:</span> {{ trackingResult.packageDimensions }}
+          </div>
+          <div>
+            <span class="font-medium">Price:</span> ${{ trackingResult.price }}
+          </div>
+          <div class="border-t pt-2 mt-2">
+            <span class="font-medium">📤 Sender:</span> {{ trackingResult.sender.name }}
+          </div>
+          <div>
+            <span class="font-medium">📥 Recipient:</span> {{ trackingResult.recipient.name }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<app-footer></app-footer>

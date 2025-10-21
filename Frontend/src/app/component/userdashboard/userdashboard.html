@@ -1,0 +1,43 @@
+
+<div class="flex h-screen overflow-hidden">
+  <!-- Sidebar -->
+  <div
+    [ngClass]="sidebarOpen ? 'w-64' : 'w-0'"
+    class="bg-gray-900 text-white transition-all duration-300 overflow-hidden"
+  >
+    <div class="p-4 text-xl font-bold border-b border-gray-700">
+      Admin Panel
+    </div>
+    <ul class="p-4 space-y-4">
+      <li><a routerLink="/" class="hover:text-blue-400">Dashboard</a></li>
+      <li><a routerLink="/ManageUsers" class="hover:text-blue-400">view orders</a></li>
+      <li><a routerLink="/UsersInfo" class="hover:text-blue-400">notification</a></li>
+      <li><a routerLink="/map" class="hover:text-blue-400">Track Parcel</a></li>
+      <div class="relative group p-4 border-t border-gray-700">
+        <div class="cursor-pointer hover:text-blue-400">Settings ⚙</div>
+        <div
+          class="absolute left-4 bottom-14 w-40 bg-white text-gray-800 rounded-md shadow-lg opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity duration-200 z-50"
+        >
+          <a routerLink="/profile" class="block px-4 py-2 hover:bg-gray-100">Profile</a>
+          <a routerLink="/Homepage" class="block px-4 py-2 hover:bg-gray-100">Logout</a>
+        </div>
+      </div>
+
+    </ul>
+
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex-1 bg-gray-100 p-6">
+    <!-- Toggle Button -->
+    <button
+      (click)="toggleSidebar()"
+      class="mb-6 px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700"
+    >
+      {{ sidebarOpen ? 'Hide Menu' : 'Show Menu' }}
+    </button>
+    <app-map></app-map>
+
+    <!-- Header -->
+    <h2 class="text-2xl font-bold mb-4 text-gray-800">Dashboard Overview</h2>
+<app-footer></app-footer>

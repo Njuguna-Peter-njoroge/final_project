@@ -1,0 +1,317 @@
+/* Import Leaflet CSS */
+@import 'leaflet/dist/leaflet.css';
+
+/* Map Container Styling */
+.map-container {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+#map {
+  z-index: 1;
+}
+
+/* Custom Marker Styling */
+.custom-div-icon {
+  background: none !important;
+  border: none !important;
+}
+
+.custom-marker {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border: 2px solid white;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.custom-marker:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.custom-marker.selected {
+  transform: scale(1.2);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+  animation: pulse 2s infinite;
+}
+
+.custom-marker.green {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.custom-marker.red {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.custom-marker.blue {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.marker-icon {
+  font-size: 14px;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Popup Styling */
+.leaflet-popup-content-wrapper {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.popup-content {
+  min-width: 200px;
+  font-family: inherit;
+}
+
+.popup-content h3 {
+  margin: 0 0 8px 0;
+  color: #1f2937;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 4px;
+}
+
+.popup-content p {
+  margin: 4px 0;
+  line-height: 1.4;
+}
+
+.status-pending {
+  color: #92400e;
+  font-weight: 600;
+}
+
+.status-in-transit {
+  color: #1e40af;
+  font-weight: 600;
+}
+
+.status-delivered {
+  color: #065f46;
+  font-weight: 600;
+}
+
+.status-cancelled {
+  color: #991b1b;
+  font-weight: 600;
+}
+
+/* Order Card Styling */
+.order-card {
+  transition: all 0.2s ease;
+  border: 1px solid #e5e7eb;
+}
+
+.order-card:hover {
+  border-color: #3b82f6;
+  transform: translateY(-1px);
+}
+
+.order-card.selected {
+  border-color: #3b82f6;
+  background-color: #eff6ff;
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.2);
+}
+
+/* Status Badge Styling */
+.status-badge {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Sidebar Scrollbar */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Map Controls */
+.leaflet-control-zoom {
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.leaflet-control-zoom a {
+  background-color: white !important;
+  color: #374151 !important;
+  border: none !important;
+  font-weight: bold !important;
+  transition: all 0.2s ease !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background-color: #f3f4f6 !important;
+  color: #1f2937 !important;
+}
+
+/* Route Lines */
+.leaflet-interactive {
+  cursor: pointer;
+}
+
+/* Animations */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tracking Overlay */
+.absolute.top-4.right-4 {
+  animation: fadeIn 0.3s ease-out;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Legend Styling */
+.absolute.bottom-4.left-4 {
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .w-80 {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    height: 50%;
+    transition: transform 0.3s ease;
+  }
+  
+  .map-container .flex {
+    flex-direction: column;
+  }
+  
+  .custom-marker {
+    width: 25px;
+    height: 25px;
+  }
+  
+  .marker-icon {
+    font-size: 12px;
+  }
+  
+  .absolute.bottom-4.left-4,
+  .absolute.top-4.right-4 {
+    position: fixed;
+    z-index: 1001;
+  }
+  
+  .absolute.bottom-4.left-4 {
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    max-width: none;
+  }
+  
+  .absolute.top-4.right-4 {
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    max-width: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .text-2xl {
+    font-size: 1.25rem;
+  }
+  
+  .px-4 {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  
+  .order-card {
+    margin-bottom: 0.5rem;
+    padding: 0.75rem;
+  }
+}
+
+/* Loading States */
+.loading {
+  position: relative;
+  pointer-events: none;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .custom-marker {
+    border-width: 3px;
+    border-color: #000;
+  }
+  
+  .order-card {
+    border-width: 2px;
+  }
+  
+  .status-badge {
+    border: 1px solid currentColor;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .custom-marker,
+  .order-card,
+  .leaflet-control-zoom a {
+    transition: none;
+  }
+  
+  .custom-marker.selected {
+    animation: none;
+  }
+}

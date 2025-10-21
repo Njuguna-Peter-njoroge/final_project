@@ -1,0 +1,83 @@
+<app-navbar></app-navbar>
+<div class="flex items-center justify-center min-h-96 bg-white mt-10">
+  <div class="bg-[#034460] text-white p-8 rounded-md shadow-lg w-full max-w-md mt-0">
+    <h2 class="text-lg font-semibold">Register</h2>
+
+    <p class="font-bold mt-8 flex items-center justify-center text-3xl font-bold font-serif">
+      Welcome to Express Delivery — Register to continue
+    </p>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="mb-4">
+        <label class="block text-sm">Name</label>
+        <input
+          formControlName="name"
+          type="text"
+          class="w-full p-2 text-black rounded"
+          placeholder="Enter your name"
+          [class.border-red-500]="registerForm.get('name')?.touched && registerForm.get('name')?.invalid"
+        />
+        <div *ngIf="getErrorMessage('name')" class="text-red-300 text-xs mt-1">
+          {{ getErrorMessage('name') }}
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-sm">Email</label>
+        <input
+          formControlName="email"
+          type="email"
+          class="w-full p-2 text-black rounded"
+          placeholder="Enter your email"
+          [class.border-red-500]="registerForm.get('email')?.touched && registerForm.get('email')?.invalid"
+        />
+        <div *ngIf="getErrorMessage('email')" class="text-red-300 text-xs mt-1">
+          {{ getErrorMessage('email') }}
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-sm">Password</label>
+        <input
+          formControlName="password"
+          type="password"
+          class="w-full p-2 text-black rounded"
+          placeholder="Enter your password"
+          [class.border-red-500]="registerForm.get('password')?.touched && registerForm.get('password')?.invalid"
+        />
+        <div *ngIf="getErrorMessage('password')" class="text-red-300 text-xs mt-1">
+          {{ getErrorMessage('password') }}
+        </div>
+      </div>
+
+      <div class="mb-6">
+        <label class="block text-sm">Confirm Password</label>
+        <input
+          formControlName="confirmPassword"
+          type="password"
+          class="w-full p-2 text-black rounded"
+          placeholder="Confirm your password"
+          [class.border-red-500]="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.invalid"
+        />
+        <div *ngIf="getErrorMessage('confirmPassword')" class="text-red-300 text-xs mt-1">
+          {{ getErrorMessage('confirmPassword') }}
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="registerForm.invalid || isLoading"
+        class="w-full py-2 bg-[#B4791C] hover:bg-yellow-700 rounded text-black font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        <span *ngIf="!isLoading">Register</span>
+        <span *ngIf="isLoading">Registering...</span>
+      </button>
+    </form>
+
+    <div class="mt-4 text-sm flex justify-between text-gray-300">
+      <p>Already have an account?</p>
+      <a routerLink="/login" class="hover:text-gray-200 transition">Login</a>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

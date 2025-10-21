@@ -1,0 +1,101 @@
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlN2YyOGFiMS1kNjY4LTRkZDktYjU2NC1mNTZiZTA1NGY4MDAiLCJlbWFpbCI6Im5qdWd1bmFocGV0ZXJuam9yb2dlQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1MzY5NDA3OCwiZXhwIjoxNzU0Mjk4ODc4fQ.CI4b9MIi7PYdwNa3lnrqOZQD3h7jRq310b6W8gVqnRw
+
+### ✅ Create Order (ADMIN only)
+POST http://localhost:3000/orders
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "pickupAddress": "123 Main Street",
+  "deliveryAddress": "456 Delivery Road",
+  "courierService": "DHL",
+  "packageWeight": 2.5,
+  "packageDimensions": "20x20x20",
+  "price": "150.75",
+  "notes": "Fragile package",
+  "customerId": "e7f28ab1-d668-4dd9-b564-f56be054f800"
+}
+
+###
+
+### ✅ Get All Orders (ADMIN)
+GET http://localhost:3000/orders
+Authorization: Bearer {{token}}
+
+###
+
+### ✅ Get Orders by Logged-in Customer (ADMIN)
+GET http://localhost:3000/orders/my-orders
+Authorization: Bearer {{token}}
+
+###
+
+### ✅ Get Single Order by ID
+GET http://localhost:3000/orders/59e539b4-99bc-45cb-abe5-2695bc4b4011
+Authorization: Bearer {{token}}
+
+###
+
+### ✅ Get Order Status History (USER or ADMIN)
+GET http://localhost:3000/orders/status-history/59e539b4-99bc-45cb-abe5-2695bc4b4011
+Authorization: Bearer {{token}}
+
+###
+
+### ✅ Update Entire Order (ADMIN)
+PATCH http://localhost:3000/orders/59e539b4-99bc-45cb-abe5-2695bc4b4011
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "pickupAddress": "Updated Address",
+  "deliveryLat": 0.3253,
+  "deliveryLng": 36.4356,
+  "price": "199.99",
+  "status": "IN_TRANSIT",
+  "statusReason": "Picked up by courier",
+  "notes": "Updated note"
+}
+
+###
+
+### ✅ Update Order Status Only (ADMIN or COURIER)
+PATCH http://localhost:3000/orders/59e539b4-99bc-45cb-abe5-2695bc4b4011/status
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "status": "DELIVERED",
+  "reason": "Delivered successfully",
+  "notes": "Signed by recipient"
+}
+
+###
+
+### ✅ Assign Courier to Order (ADMIN)
+PATCH http://localhost:3000/orders/assign-courier/bd011bdc-d87a-45a5-99df-bf0d59d95d4c
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "courierId": "1a8765a3-36f7-41ce-af3a-65bfdaed4ed7"
+}
+
+###
+
+### ✅ Delete Order by ID (ADMIN)
+DELETE http://localhost:3000/orders/b1c7ba51-d301-4931-97bd-3091407f96d6
+Authorization: Bearer {{token}}
+
+###
+
+### ✅ Filter Orders by Status and Date (ADMIN)
+POST http://localhost:3000/orders/filter
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "status": "IN_TRANSIT",
+  "FromDate": "2025-07-01",
+  "ToDate": "2025-07-25"
+}

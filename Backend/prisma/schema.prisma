@@ -1,0 +1,299 @@
+// generator client {
+//   provider = "prisma-client-js"
+// }
+
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")
+// }
+
+// enum UserRole {
+//   ADMIN
+//   USER
+//   COURIER
+// }
+
+// enum OrderStatus {
+//   PENDING
+//   CONFIRMED
+//   PICKED_UP
+//   IN_TRANSIT
+//   OUT_FOR_DELIVERY
+//   DELIVERED
+//   CANCELLED
+// }
+
+// enum Priority {
+//   NORMAL
+//   URGENT
+// }
+
+// enum VehicleType {
+//   BICYCLE
+//   MOTORCYCLE
+//   CAR
+//   VAN
+//   TRUCK
+// }
+
+// enum GoodType {
+//   FOOD
+//   ELECTRONICS
+//   DOCUMENTS
+//   CLOTHING
+//   OTHER
+// }
+
+// enum AccountStatus {
+//   ACTIVE
+//   INACTIVE
+//   PENDING
+//   BANNED
+// }
+
+// model User {
+//   id                    String        @id @default(uuid())
+//   name                  String
+//   email                 String        @unique
+//   password              String
+//   status                AccountStatus @default(ACTIVE)
+//   role                  UserRole      @default(USER)
+//   isVerified            Boolean       @default(false)
+//   createdAt             DateTime      @default(now())
+//   updatedAt             DateTime      @updatedAt
+//   phone                 String?
+//   location              String?
+//   licenseNumber         String?
+//   vehicleType           VehicleType?
+//   verificationToken     String?
+//   isAvailable           Boolean?
+//   orders                Order[]       @relation("UserOrders")
+//   parcels               Parcel[]      @relation("UserParcels")
+//   assignedCourierOrders Order[]       @relation("AssignedCourierOrders")
+// }
+
+// model Order {
+//   id                String          @id @default(uuid())
+//   orderId           String          @unique
+//   customer          User            @relation("UserOrders", fields: [customerId], references: [id])
+//   customerId        String
+//   pickupAddress     String
+//   deliveryAddress   String
+//   pickupLat         Float? // New: pickup latitude
+//   pickupLng         Float? // New: pickup longitude
+//   deliveryLat       Float? // New: delivery latitude
+//   deliveryLng       Float? // New: delivery longitude
+//   courierLat        Float? // New: real-time courier latitude
+//   courierLng        Float? // New: real-time courier longitude
+//   courierService    String
+//   status            OrderStatus
+//   createdAt         DateTime        @default(now())
+//   updatedAt         DateTime        @updatedAt
+//   packageWeight     Decimal
+//   packageDimensions String
+//   price             String
+//   notes             String?
+//   assignedCourierId String?
+//   statusHistory     StatusHistory[] @relation("OrderStatusHistory")
+
+//   User User[] @relation("AssignedCourierOrders")
+// }
+
+// model Parcel {
+//   id                String          @id @default(uuid())
+//   trackingNumber    String          @unique
+//   goodType          GoodType
+//   goodDescription   String
+//   goodWeight        Int
+//   status            OrderStatus
+//   sender            User            @relation("UserParcels", fields: [senderId], references: [id])
+//   senderId          String
+//   recipientName     String
+//   recipientEmail    String
+//   recipientPhone    String
+//   recipientAddress  String
+//   deliveryDetails   String?
+//   weight            Float?
+//   dimensions        String?
+//   description       String?
+//   priority          Priority?
+//   estimatedDelivery DateTime?
+//   actualDelivery    DateTime?
+//   cost              Float?
+//   createdAt         DateTime        @default(now())
+//   updatedAt         DateTime        @updatedAt
+//   statusHistory     StatusHistory[] @relation("ParcelStatusHistory")
+// }
+
+// model StatusHistory {
+//   id        String      @id @default(uuid())
+//   order     Order?      @relation("OrderStatusHistory", fields: [orderId], references: [id])
+//   orderId   String?
+//   parcel    Parcel?     @relation("ParcelStatusHistory", fields: [parcelId], references: [id])
+//   parcelId  String?
+//   status    OrderStatus
+//   timestamp DateTime    @default(now())
+//   updatedBy String
+//   reason    String?
+//   createdAt DateTime    @default(now())
+//   notes     String?
+// }
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  USER
+  COURIER
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PICKED_UP
+  IN_TRANSIT
+  OUT_FOR_DELIVERY
+  DELIVERED
+  CANCELLED
+}
+
+enum Priority {
+  NORMAL
+  URGENT
+}
+
+enum VehicleType {
+  BICYCLE
+  MOTORCYCLE
+  CAR
+  VAN
+  TRUCK
+}
+
+enum GoodType {
+  FOOD
+  ELECTRONICS
+  DOCUMENTS
+  CLOTHING
+  OTHER
+}
+
+enum AccountStatus {
+  ACTIVE
+  INACTIVE
+  PENDING
+  BANNED
+}
+
+model User {
+  id                    String        @id @default(uuid())
+  name                  String
+  email                 String        @unique
+  password              String
+  status                AccountStatus @default(ACTIVE)
+  role                  UserRole      @default(USER)
+  isVerified            Boolean       @default(false)
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+  phone                 String?
+  location              String?
+  latitude   Float?
+  longitude  Float?
+  zipcode    String?
+  licenseNumber         String?
+  vehicleType           VehicleType?
+  verificationToken     String?
+  isAvailable           Boolean?
+
+  // Relations
+  orders                Order[]       @relation("UserOrders") // as customer
+  parcels               Parcel[]      @relation("UserParcels") // as sender of parcels
+  assignedCourierOrders Order[]       @relation("AssignedCourierOrders") // as assigned courier
+}
+
+model Order {
+  id                String          @id @default(uuid())
+  orderId           String          @unique
+  pickupAddress     String
+  deliveryAddress   String
+  pickupLat         Float?
+  pickupLng         Float?
+  deliveryLat       Float?
+  deliveryLng       Float?
+  courierLat        Float?
+  courierLng        Float?
+  courierService    String
+  status            OrderStatus
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  packageWeight     Decimal
+  packageDimensions String
+  price             String
+  notes             String?
+
+  // Recipient information
+  receiverName      String?
+  receiverEmail     String?
+  receiverPhone     String?
+
+  // Customer relation
+  customerId        String
+  customer          User            @relation("UserOrders", fields: [customerId], references: [id])
+
+  // Assigned courier relation
+  assignedCourierId String?
+  assignedCourier   User?           @relation("AssignedCourierOrders", fields: [assignedCourierId], references: [id])
+
+  // Status history
+  statusHistory     StatusHistory[] @relation("OrderStatusHistory")
+}
+
+model Parcel {
+  id                String          @id @default(uuid())
+  trackingNumber    String          @unique
+  goodType          GoodType
+  goodDescription   String
+  goodWeight        Int
+  status            OrderStatus
+  senderId          String
+  sender            User            @relation("UserParcels", fields: [senderId], references: [id])
+  recipientName     String
+  recipientEmail    String
+  recipientPhone    String
+  recipientAddress  String
+  deliveryDetails   String?
+  weight            Float?
+  dimensions        String?
+  description       String?
+  priority          Priority?
+  estimatedDelivery DateTime?
+  actualDelivery    DateTime?
+  cost              Float?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  // Status history
+  statusHistory     StatusHistory[] @relation("ParcelStatusHistory")
+}
+
+model StatusHistory {
+  id        String      @id @default(uuid())
+  orderId   String?
+  order     Order?      @relation("OrderStatusHistory", fields: [orderId], references: [id])
+  parcelId  String?
+  parcel    Parcel?     @relation("ParcelStatusHistory", fields: [parcelId], references: [id])
+  status    OrderStatus
+  timestamp DateTime    @default(now())
+  updatedBy String
+  reason    String?
+  createdAt DateTime    @default(now())
+  notes     String?
+}

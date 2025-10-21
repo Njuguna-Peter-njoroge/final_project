@@ -1,0 +1,69 @@
+<div class="min-h-screen flex flex-col">
+  <app-navbar></app-navbar>
+
+  <div class="flex-1 w-full bg-white px-4 mt-5">
+    <table class="table-auto border-collapse w-full mt-0">
+      <thead>
+      <tr>
+        <th class="border px-1 py-1">Order ID</th>
+        <th class="border px-1 py-1 min-w-[16rem]">Customer Name</th>
+        <th class="border px-1 py-1">Pickup Address</th>
+        <th class="border px-1 py-1">Delivery Address</th>
+        <th class="border px-1 py-1">Courier Service</th>
+        <th class="border px-1 py-1">Status</th>
+        <th class="border px-1 py-1">Created At</th>
+        <th class="border px-1 py-1">Updated At</th>
+        <th class="border px-1 py-1">Package Weight</th>
+        <th class="border px-1 py-1">Package Dimensions</th>
+        <th class="border px-1 py-1">Price</th>
+        <th class="border px-4 py-3 bg-gray-100 font-semibold text-left">Notes</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngIf="paginatedOrders.length === 0">
+        <td colspan="12" class="text-center py-4">No orders available.</td>
+      </tr>
+      <tr *ngFor="let order of paginatedOrders">
+        <td class="border px-1 py-1">{{ order.orderId }}</td>
+        <td class="border px-1 py-1 min-w-[16rem]">{{ order.customerName }}</td>
+        <td class="border px-1 py-1">{{ order.pickupAddress }}</td>
+        <td class="border px-1 py-1">{{ order.deliveryAddress }}</td>
+        <td class="border px-1 py-1">
+          <ng-container *ngIf="isAdmin; else showCourier">
+            <select #courierSelect class="border rounded px-2 py-1" (change)="assignCourier(order, courierSelect.value)">
+              <option value="" disabled [selected]="!order.courierService">
+                {{ order.courierService ? order.courierService : 'Assign Courier' }}
+              </option>
+              <option *ngFor="let courier of couriers" [value]="courier.id">{{ courier.name }}</option>
+            </select>
+          </ng-container>
+          <ng-template #showCourier>
+            {{ order.courierService }}
+          </ng-template>
+        </td>
+        <td class="border px-1 py-1">{{ order.status }}</td>
+        <td class="border px-1 py-1">{{ order.createdAt }}</td>
+        <td class="border px-1 py-1">{{ order.updatedAt }}</td>
+        <td class="border px-1 py-1">{{ order.packageWeight }}</td>
+        <td class="border px-1 py-1">{{ order.packageDimensions }}</td>
+        <td class="border px-1 py-1">{{ order.price }}</td>
+        <td class="border px-4 py-3 max-w-xs">
+          <div class="notes-content bg-gray-50 p-3 rounded-lg border-l-4 border-blue-400 text-sm leading-relaxed">
+            <span class="text-gray-700">{{ order.notes || 'No notes available' }}</span>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <!-- Pagination Controls -->
+    <div class="flex justify-center items-center mt-4" *ngIf="orders.length > pageSize">
+      <button (click)="prevPage()" [disabled]="currentPage === 1" class="px-3 py-1 mx-1 bg-gray-200 rounded disabled:opacity-50">Prev</button>
+      <ng-container *ngFor="let page of [].constructor(totalPages); let i = index">
+        <button (click)="goToPage(i+1)" [class.bg-blue-400]="currentPage === (i+1)" class="px-2 py-1 mx-1 rounded border border-gray-300" [disabled]="currentPage === (i+1)">{{i+1}}</button>
+      </ng-container>
+      <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="px-3 py-1 mx-1 bg-gray-200 rounded disabled:opacity-50">Next</button>
+    </div>
+  </div>
+
+  <app-footer></app-footer>
+</div>

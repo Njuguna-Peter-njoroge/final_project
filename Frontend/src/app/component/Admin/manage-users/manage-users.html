@@ -1,0 +1,50 @@
+<div class="min-h-screen flex flex-col">
+  <app-navbar></app-navbar>
+
+  <div class="flex-1 w-full bg-white px-4 mt-5">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-2xl font-bold text-center flex-1">Manage Users & Parcels</h2>
+      <a routerLink="/add-driver-courier" class="ml-4 px-4 py-2 bg-[#B4791C] text-white rounded-lg font-semibold hover:bg-yellow-700 transition-all">Add New</a>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="table-auto border-collapse w-full text-sm">
+        <thead class="bg-gray-100">
+        <tr>
+          <th class="border px-2 py-2">Name</th>
+          <th class="border px-2 py-2 min-w-[12rem]">Email</th>
+          <th class="border px-2 py-2">Phone</th>
+          <th class="border px-2 py-2">Verified</th>
+          <th class="border px-2 py-2">Location</th>
+          <th class="border px-2 py-2">Role</th>
+          <th class="border px-2 py-2">Created At</th>
+          <th class="border px-2 py-2">Updated At</th>
+          <th class="border px-2 py-2">Good Type</th>
+          <th class="border px-2 py-2">Weight</th>
+          <th class="border px-2 py-2">Price</th>
+          <th class="border px-2 py-2">Description</th>
+          <th class="border px-2 py-2">Zip Code</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let user of users" class="hover:bg-gray-50">
+          <td class="border px-2 py-2">{{ user.name }}</td>
+          <td class="border px-2 py-2">{{ user.email }}</td>
+          <td class="border px-2 py-2">{{ user.phone }}</td>
+          <td class="border px-2 py-2">{{ user.isVerified ? 'Yes' : 'No' }}</td>
+          <td class="border px-2 py-2">{{ user.location }}</td>
+          <td class="border px-2 py-2">{{ user.role }}</td>
+          <td class="border px-2 py-2">{{ user.createdAt | date: 'short' }}</td>
+          <td class="border px-2 py-2">{{ user.updatedAt | date: 'short' }}</td>
+          <td class="border px-2 py-2">{{ user.goodType }}</td>
+          <td class="border px-2 py-2">{{ user.goodWeight }}</td>
+          <td class="border px-2 py-2">{{ user.goodPrice }}</td>
+          <td class="border px-2 py-2">{{ user.goodDescription }}</td>
+          <td class="border px-2 py-2">{{ user.zipcode }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <app-footer></app-footer>
+</div>

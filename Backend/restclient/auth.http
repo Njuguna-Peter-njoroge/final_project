@@ -1,0 +1,66 @@
+@baseUrl = http://localhost:3000
+
+### REGISTER (returns token)
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "devmaxmillianmuiruri@gmail.com",
+  "password":"courier123",
+  "name": "peter"
+}
+
+###
+
+### LOGIN (returns token)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "devmaxmillianmuiruri@gmail.com",
+  "password": "courier123"
+}
+###
+
+### CHANGE PASSWORD (example)
+PATCH {{baseUrl}}/users/b7e5a183-e46a-42e3-a734-72d415027c0d/password
+Content-Type: application/json
+
+{
+  "currentPassword": "admin123",
+  "newPassword": "admin1234"
+}
+
+###
+
+### VERIFY EMAIL (returns token)
+POST {{baseUrl}}/auth/verify-email
+Content-Type: application/json
+
+{
+  "email": "b14446747e@gmail.com",
+  "token": "423156"
+}
+
+###
+
+### FORGOT PASSWORD
+POST {{baseUrl}}/auth/forgot-password
+Content-Type: application/json
+
+{
+ "email": "dreamcoder763@gmail.com"
+}
+
+###
+
+### RESET PASSWORD
+POST {{baseUrl}}/auth/reset-password
+Content-Type: application/json
+
+{
+ "email": "njugunahpeternjoroge@gmail.com",
+  "token": "271387",
+  "newPassword": "admin1234"
+}
+

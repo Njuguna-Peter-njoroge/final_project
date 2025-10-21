@@ -1,0 +1,35 @@
+<app-navbar></app-navbar>
+<div class="flex items-center justify-center min-h-96 bg-white mt-10">
+  <div class="bg-[#034460] text-white p-8 rounded-md shadow-lg w-full max-w-md mt-0">
+    <h2 class="text-lg font-semibold">Add New Courier/Driver</h2>
+    <form [formGroup]="courierForm" (ngSubmit)="onSubmit()">
+      <label class="block text-sm">Name</label>
+      <input formControlName="name" type="text" class="w-full p-2 mb-4 text-black rounded" placeholder="Enter name" />
+      <label class="block text-sm">Email</label>
+      <input formControlName="email" type="email" class="w-full p-2 mb-4 text-black rounded" placeholder="Enter email" />
+      <label class="block text-sm">Password</label>
+      <input formControlName="password" type="password" class="w-full p-2 mb-4 text-black rounded" placeholder="Enter password" />
+      <label class="block text-sm">License Number/ID</label>
+      <input formControlName="licenseNumber" type="text" class="w-full p-2 mb-4 text-black rounded" placeholder="Enter license number or ID" />
+
+      <label class="block text-sm">Vehicle Type</label>
+      <select formControlName="vehicleType" class="w-full p-2 mb-4 text-black rounded">
+        <option value="">Select vehicle type</option>
+        <option value="BIKE">Bike</option>
+        <option value="CAR">Car</option>
+        <option value="VAN">Van</option>
+        <option value="TRUCK">Truck</option>
+        <option value="OTHER">Other</option>
+      </select>
+
+      <label class="block text-sm">Available</label>
+      <select formControlName="isAvailable" class="w-full p-2 mb-6 text-black rounded">
+        <option [ngValue]="true">Yes</option>
+        <option [ngValue]="false">No</option>
+      </select>
+
+      <button type="submit" class="w-full py-2 bg-[#B4791C] hover:bg-yellow-700 rounded text-black font-semibold">Add Courier</button>
+    </form>
+  </div>
+</div>
+<app-footer></app-footer>

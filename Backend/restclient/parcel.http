@@ -1,0 +1,68 @@
+### 1. Create a new parcel
+POST http://localhost:3000/parcels
+Content-Type: application/json
+
+{
+  "goodType": "ELECTRONICS",
+  "goodDescription": "Smartphone",
+  "goodWeight": 2,
+  "status": "PENDING",
+  "senderId": "6ac29237-1a1d-43cd-bf1e-b8ccf1c9d3bb",
+  "recipientName": "John Doe",
+  "recipientEmail": "dreamcoder763@gmail.com",
+  "recipientPhone": "0712345678",
+  "recipientAddress": "123 Nairobi Street",
+  "deliveryDetails": "Handle with care",
+  "dimensions": "10x5x2",
+  "description": "iPhone 14 Pro",
+  "priority": "URGENT",
+  "estimatedDelivery": "2025-08-01T14:00:00.000Z"
+}
+
+
+### Get or Create User by Email
+GET http://localhost:3000/users/by-email?email=john@example.com
+
+###
+
+### 2. Track parcel by tracking number
+GET http://localhost:3000/parcels/track/PRC-3E5ADE03
+
+##
+### Get User by Email
+GET http://localhost:3000/users/by-email?email=john@example.com"
+Authorization: Bearer <your_jwt_token>
+
+### 3. Get all parcels
+GET http://localhost:3000/parcels
+
+###
+
+### 4. Get parcel by ID
+GET http://localhost:3000/parcels/9ca44a6e-a431-4ffe-9ce7-30a081b669eb
+
+###
+
+### 5. Update parcel
+PATCH http://localhost:3000/parcels/9ca44a6e-a431-4ffe-9ce7-30a081b669eb
+Content-Type: application/json
+
+{
+  "status": "IN_TRANSIT",
+  "priority": "NORMAL"
+}
+
+###
+
+### 6. Delete parcel
+DELETE http://localhost:3000/parcels/0b85b251-1a35-4010-ba00-276fc1a30819
+
+###
+
+### 7. Get parcels by sender ID
+GET http://localhost:3000/parcels/sender/55a2f8bf-c805-40f5-80fb-0a35f4966d20
+
+###
+
+### 8. Get parcels by status
+GET http://localhost:3000/parcels/status/PENDING
